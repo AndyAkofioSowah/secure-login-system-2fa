@@ -1,0 +1,12 @@
+/Users/adz/secure-login-system-2fa/src/main/java/com/securelogin/SecureloginApplication.java
+/Users/adz/secure-login-system-2fa/src/main/java/com/securelogin/config/SecurityConfig.java
+/Users/adz/secure-login-system-2fa/src/main/java/com/securelogin/controller/AuthController.java
+/Users/adz/secure-login-system-2fa/src/main/java/com/securelogin/controller/LoginController.java
+/Users/adz/secure-login-system-2fa/src/main/java/com/securelogin/controller/MainController.java
+/Users/adz/secure-login-system-2fa/src/main/java/com/securelogin/controller/RegistrationController.java
+/Users/adz/secure-login-system-2fa/src/main/java/com/securelogin/controller/Setup2faController.java
+/Users/adz/secure-login-system-2fa/src/main/java/com/securelogin/controller/Verify2faController.java
+/Users/adz/secure-login-system-2fa/src/main/java/com/securelogin/model/User.java
+/Users/adz/secure-login-system-2fa/src/main/java/com/securelogin/repository/UserRepository.java
+/Users/adz/secure-login-system-2fa/src/main/java/com/securelogin/service/CustomUserDetailsService.java
+/Users/adz/secure-login-system-2fa/src/main/java/com/securelogin/service/UserService.java
