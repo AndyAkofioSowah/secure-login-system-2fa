@@ -3,6 +3,7 @@ package com.securelogin.controller;
 import com.eatthepath.otp.TimeBasedOneTimePasswordGenerator;
 import com.securelogin.model.User;
 import com.securelogin.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.codec.binary.Base32;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,8 @@ public class Verify2faController {
     @PostMapping("/verify-2fa")
     public String verify2fa(@RequestParam("code") int code,
                             Principal principal,
-                            RedirectAttributes redirect) throws Exception {
+                            RedirectAttributes redirect,
+                            HttpServletRequest request) throws Exception {
 
         User user = userService.findByUsername(principal.getName());
 
@@ -55,9 +57,12 @@ public class Verify2faController {
             redirect.addFlashAttribute("error", "Invalid 2FA code");
             return "redirect:/verify-2fa";
         }
-
-        // success! send them on to their real home page
+    //if verified =
+        request.getSession().setAttribute("is2faVerified", true);
         return "redirect:/home";
+
     }
+
+
 }
 

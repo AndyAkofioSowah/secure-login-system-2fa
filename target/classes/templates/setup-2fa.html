@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <meta charset="UTF-8"/>
     <title>Set up 2FA</title>
 </head>
 <body>
 <h1>Scan this QR code with your Authenticator app</h1>
 
-<p>QR URL: <span th:text="${qrUrl}"></span></p>
-
-<!-- Just one binding here: -->
-<img th:src="${qrUrl}"
-     alt="QR code to scan"/>
+<!-- FIXED this line -->
+<img th:src="@{${qrUrl}}" alt="QR code to scan"/>
 
 <p>If your phone can’t scan, enter this secret manually:</p>
 <pre th:text="${secret}"></pre>
@@ -20,5 +18,8 @@
     Once you’ve added it to your app it will display a 6‐digit code every 30 seconds.
     <a th:href="@{/verify-2fa}">Click here to verify</a>
 </p>
+<div style="color: red;">If this is red, inline styles work</div>
+<div class="test-style">If this is green, CSS loaded</div>
+
 </body>
 </html>

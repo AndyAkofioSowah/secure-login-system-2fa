@@ -16,29 +16,30 @@ import com.securelogin.service.CustomUserDetailsService;
 @EnableWebSecurity
 public class SecurityConfig {
 
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // public pages:
-                        .requestMatchers("/","/login","/register","/css/**","/js/**").permitAll()
-                        // everything else requires a logged‐in user
-                        .requestMatchers("/setup-2fa","/verify-2fa","/home").authenticated()
+                        .requestMatchers("/", "/index","/login", "/register", "/setup-2fa", "/verify-2fa", "/css/**", "/js/**", "/images/**")
+                        .permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        // once username/password ok, always go to setup-2fa next:
                         .defaultSuccessUrl("/setup-2fa", true)
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/")
-                        .permitAll()
+                        .logoutSuccessUrl("/login?logout").permitAll()
                 )
-        ;
+                // after username/password auth, enforce 2FA
+                .addFilterAfter(new TwoFactorAuthenticationFilter(),
+                        org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
+
 
 
 
