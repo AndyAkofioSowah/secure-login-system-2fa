@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Setup Two-Factor Authentication</title>
+    <meta charset="UTF-8"/>
+    <title>Set up 2FA</title>
 </head>
 <body>
-<h1>Set up Two-Factor Authentication</h1>
-<p>Scan the QR code below with your authenticator app (e.g. Google Authenticator), then click Continue.</p>
+<h1>Scan this QR code with your Authenticator app</h1>
 
-<!-- QR code generated in RegistrationController as qrUrl -->
-<img th:src="${qrUrl}" alt="Scan this QR code with your authenticator app"/>
+<p>QR URL: <span th:text="${qrUrl}"></span></p>
 
-<form th:action="@{/verify-2fa}" method="get">
-    <button type="submit">Continue</button>
-</form>
+<!-- Just one binding here: -->
+<img th:src="${qrUrl}"
+     alt="QR code to scan"/>
+
+<p>If your phone can’t scan, enter this secret manually:</p>
+<pre th:text="${secret}"></pre>
+
+<p>
+    Once you’ve added it to your app it will display a 6‐digit code every 30 seconds.
+    <a th:href="@{/verify-2fa}">Click here to verify</a>
+</p>
 </body>
 </html>

@@ -2,6 +2,8 @@ package com.securelogin.util;
 
 import org.apache.commons.codec.binary.Base32;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 
 public final class OtpUtils {
@@ -20,18 +22,13 @@ public final class OtpUtils {
         return BASE32.encodeToString(bytes);
     }
 
-    /**
-     * Builds the otpauth:// URL which most authenticator apps (Google Authenticator,
-     * Authy, etc.) can scan to enroll the account.
-     */
-    public static String buildOtpAuthUrl(
-            String issuer,
-            String username,
-            String base32Secret
-    ) {
+    public static String generateUri(String issuer, String accountName, String base32Secret) {
+        String encIssuer  = URLEncoder.encode(issuer, StandardCharsets.UTF_8);
+        String encAccount = URLEncoder.encode(accountName, StandardCharsets.UTF_8);
         return String.format(
                 "otpauth://totp/%s:%s?secret=%s&issuer=%s",
-                issuer, username, base32Secret, issuer
+                encIssuer, encAccount, base32Secret, encIssuer
         );
     }
+
 }
