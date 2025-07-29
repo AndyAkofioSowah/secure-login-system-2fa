@@ -67,7 +67,7 @@
 			<artifactId>spring-security-crypto</artifactId>
 		</dependency>
 
-		<!-- Lombok (annotations like @Getter, @Setter) -->
+
 
 
 		<dependency>
@@ -76,6 +76,13 @@
 			<version>0.4.0</version>
 		</dependency>
 
+		<!-- mysql-->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.33</version>
+			<scope>runtime</scope>
+		</dependency>
 
 
 
