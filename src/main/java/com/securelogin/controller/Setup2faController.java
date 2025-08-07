@@ -4,13 +4,15 @@ import com.securelogin.model.User;
 import com.securelogin.service.UserService;
 import com.securelogin.util.OtpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.security.Principal;
 
 @Controller
 public class Setup2faController {
@@ -24,37 +26,35 @@ public class Setup2faController {
         this.userService = userService;
     }
 
-
     @GetMapping("/setup-2fa")
-    public String showSetup2fa(Principal principal, Model model) throws Exception {
+    public String showSetup2fa(Model model) throws Exception {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
+            return "redirect:/login";
+        }
 
-        User user = userService.findByUsername(principal.getName());
+        String username = auth.getName();
+        User user = userService.findByUsername(username);
 
-        // 1) generate & persist the TOTP secret
+// 1) generate & persist the TOTP secret
         String secret = OtpUtils.generateBase32Secret();
         user.setTotpSecret(secret);
-        userService.registerUser(user);
+        userService.updateTotpSecret(user);
 
-        // 2) build the otpauth:// URI (this is what Authenticator apps expect)
+        // 2) generate QR
         String otpAuthUri = OtpUtils.generateUri("YourAppName", user.getUsername(), secret);
-
-// new (QuickChart.io – actively maintained):
         String qrUrl = "https://quickchart.io/qr"
                 + "?text=" + URLEncoder.encode(otpAuthUri, StandardCharsets.UTF_8)
-                + "&size=200"    // this yields a 200×200 px image
-                + "&ecLevel=L";  // error-correction level (L/M/Q/H)
+                + "&size=200"
+                + "&ecLevel=L";
 
         model.addAttribute("qrUrl", qrUrl);
         model.addAttribute("secret", secret);
         return "setup-2fa";
     }
-
-
-
-
-
 }
+
 
 
 
