@@ -38,9 +38,10 @@ public class Setup2faController {
         User user = userService.findByUsername(username);
 
 // 1) generate & persist the TOTP secret
+// Setup2faController
         String secret = OtpUtils.generateBase32Secret();
         user.setTotpSecret(secret);
-        userService.updateTotpSecret(user);
+        userService.updateTotpSecret(user, secret);
 
         // 2) generate QR
         String otpAuthUri = OtpUtils.generateUri("YourAppName", user.getUsername(), secret);

@@ -2,23 +2,36 @@ package com.securelogin.controller;
 
 import com.securelogin.model.User;
 import com.securelogin.service.UserService;
+import com.securelogin.util.OtpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @PostMapping("/register")
-    @ResponseBody
-    public String register(@RequestBody User user) {
-        userService.registerUser(user);
-        return "User registered successfully!";
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
+    @PostMapping("/register")
+    public String register(@RequestBody User user) {
+        if (userService.userExists(user.getUsername())) {
+            return "Username already taken";
+        }
 
+        String secret = OtpUtils.generateBase32Secret();
+        userService.createUser(
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword(), // RAW password; service will encode
+                secret
+        );
+
+        return "User registered successfully!";
+    }
 }
+

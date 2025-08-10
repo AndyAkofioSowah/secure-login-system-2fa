@@ -11,40 +11,39 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final UserRepository repo;
+    private final BCryptPasswordEncoder encoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserService(UserRepository repo, BCryptPasswordEncoder encoder) {
+        this.repo = repo;
+        this.encoder = encoder;
     }
 
-
     public boolean userExists(String username) {
-        return userRepository.findByUsername(username).isPresent();
+        return repo.findByUsername(username).isPresent();
     }
 
     public User findByUsername(String username) {
-        return userRepository
-                .findByUsername(username)
+        return repo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
-    // in your UserService
-    public void registerUser(User user) {
-        // encode only if it’s newly created (i.e. password isn’t already a BCrypt hash)
-        if (!user.getPassword().startsWith("$2a$")) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-        userRepository.save(user);
+    // NEW users only — always encode here
+    public User createUser(String username, String email, String rawPassword, String totpSecret) {
+        User u = new User();
+        u.setUsername(username);
+        u.setEmail(email);
+        u.setPassword(encoder.encode(rawPassword));  // single encode
+        u.setTotpSecret(totpSecret);
+        return repo.save(u);
     }
 
-    public void updateTotpSecret(User user) {
-        // don’t touch the password if you’re just updating 2FA
-        userRepository.save(user);
+    // Update secret only — never touch password
+    public void updateTotpSecret(User user, String secret) {
+        user.setTotpSecret(secret);
+        repo.save(user);
     }
-
-
-
 }
+
 
