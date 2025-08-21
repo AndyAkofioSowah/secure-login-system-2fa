@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8"/>
+    <title>Verify 2FA</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <meta charset="UTF-8">
-    <title>Verify Two-Factor Authentication</title>
 </head>
 <body>
-<h1>Verify 2FA Code</h1>
+<h1>Enter 2FA Code</h1>
 
-<p th:if="${error}" th:text="${error}" style="color:red;"></p>
+<p>Please open your authenticator app and enter the 6-digit code:</p>
 
 <form th:action="@{/verify-2fa}" method="post">
-    <label for="code">Enter the 6-digit code from your app:</label><br/>
-    <input type="text" id="code" name="code" maxlength="6" required/><br/><br/>
+    <input type="text" name="code" placeholder="123456" required/>
     <button type="submit">Verify</button>
 </form>
 
+<p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
 </body>
 </html>
-ml>
+

@@ -2,9 +2,9 @@ package com.securelogin.controller;
 
 import com.securelogin.model.User;
 import com.securelogin.service.UserService;
-import com.securelogin.util.OtpUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,26 +37,44 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User form,
+                               Model model,
                                HttpServletRequest request) {
-        if (userService.userExists(form.getUsername())) {
-            request.getSession().setAttribute("error", "Username already taken");
+        String username = form.getUsername().trim();
+        String email    = form.getEmail().trim().toLowerCase(java.util.Locale.ROOT);
+        String raw      = form.getPassword();
+
+        try {
+            // Generate TOTP secret right away
+            String secret = com.securelogin.util.OtpUtils.generateBase32Secret();
+            User saved = userService.createUser(username, email, raw, secret);
+
+            // Auto-login so /setup-2fa loads
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, raw));
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+            // Mark 2FA status in session
+            request.getSession().setAttribute("is2faVerified", false);
+            request.getSession().setAttribute("is2faSetupPending", true); // NEW 👈
+
+            loginAttemptService.loginSucceeded(request.getRemoteAddr());
+            return "redirect:/setup-2fa";
+
+        } catch (DataIntegrityViolationException e) {
+            // Check which field caused the conflict
+            if (userService.userExists(username)) {
+                model.addAttribute("error", "Username already taken");
+            } else if (userService.emailExists(email)) {
+                model.addAttribute("error", "Email already in use");
+            } else {
+                model.addAttribute("error", "Registration failed. Please try again.");
+            }
             return "register";
         }
-
-        String raw = form.getPassword();
-        String secret = OtpUtils.generateBase32Secret();
-
-        // persist new user (single encode happens inside service)
-        User saved = userService.createUser(form.getUsername(), form.getEmail(), raw, secret);
-
-        // auto-login so /setup-2fa loads
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(saved.getUsername(), raw));
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        loginAttemptService.loginSucceeded(request.getRemoteAddr());
-
-        return "redirect:/setup-2fa";
     }
+
+
+
 
 }
 

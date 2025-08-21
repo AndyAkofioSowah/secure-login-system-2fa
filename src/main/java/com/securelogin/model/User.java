@@ -11,8 +11,12 @@ public class User {
     private Long id;
 
     private String username;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
     private String password;
+
     private String totpSecret;
 
     // --- GETTERS & SETTERS ------------------------------------------------

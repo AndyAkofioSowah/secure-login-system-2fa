@@ -12,49 +12,64 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 public class TwoFactorAuthenticationFilter extends OncePerRequestFilter {
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain)
             throws ServletException, IOException {
 
-        String path = request.getRequestURI();
+        String path = request.getServletPath();
 
-        // 1) always let through any static resource:
-        if (path.startsWith("/css/")
+        // 1) Static assets: always allow
+        if (path.startsWith("/css/") || path.startsWith("/js/") || path.startsWith("/images/")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // Extras browsers often hit
+        if (path.equals("/favicon.ico") || path.equals("/error")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // 2) If not logged in, don't enforce 2FA
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // 3) Always allow core auth/reset/setup/verify/logout endpoints
+        if (path.startsWith("/setup-2fa")
+                || path.startsWith("/verify-2fa")
+                || path.startsWith("/logout")
+                || path.startsWith("/forgot-password")
+                || path.startsWith("/reset-password")
+                || path.startsWith("/css/")
                 || path.startsWith("/js/")
                 || path.startsWith("/images/")) {
             chain.doFilter(request, response);
             return;
         }
 
-        // 2) if not logged in, just continue
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null
-                || !auth.isAuthenticated()
-                || auth instanceof AnonymousAuthenticationToken) {
-            chain.doFilter(request, response);
+
+        // 4) Check session attributes
+        Boolean setupPending = (Boolean) request.getSession().getAttribute("is2faSetupPending");
+        Boolean passed2fa    = (Boolean) request.getSession().getAttribute("is2faVerified");
+
+        if (Boolean.TRUE.equals(setupPending)) {
+            // User just registered and needs to finish setup → force them to /setup-2fa
+            response.sendRedirect(request.getContextPath() + "/setup-2fa");
             return;
         }
 
-        // 3) allow the 2FA endpoints themselves
-        if (path.startsWith("/setup-2fa")
-                || path.startsWith("/verify-2fa")
-                || path.startsWith("/logout")) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-        // 4) now we’re logged-in and not hitting a public/static/2fa URL —
-        //    check if they’ve completed 2FA
-        Boolean passed2fa = (Boolean) request.getSession()
-                .getAttribute("is2faVerified");
         if (Boolean.TRUE.equals(passed2fa)) {
+            // Normal flow: user has passed 2FA → allow
             chain.doFilter(request, response);
         } else {
-            // not yet done → send them to the verify page
+            // Logged in but not verified yet → send to verify
             response.sendRedirect(request.getContextPath() + "/verify-2fa");
         }
     }
 }
-
