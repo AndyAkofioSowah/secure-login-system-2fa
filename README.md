@@ -1,8 +1,8 @@
-#  Secure Login System with 2FA (Spring Boot)
+# 🔐 Secure Login System with 2FA (Spring Boot)
 
 A production-style **secure authentication system** built with **Java Spring Boot**, **Spring Security**, and **MySQL**, featuring **Two-Factor Authentication (2FA)** and a full **password reset flow**.
 
-##  Features
+## 🚀 Features
 
 -  User registration & login with **BCrypt password hashing**  
 -  **Brute-force protection** with IP-based lockouts  
@@ -12,6 +12,7 @@ A production-style **secure authentication system** built with **Java Spring Boo
 -  CSRF protection & secure session handling  
 -  Styled **Thymeleaf templates** (login, setup 2FA, verify 2FA, reset password)  
 -  Built with **Spring Boot 3, Spring Security 6, Hibernate, MySQL**
+-  To-Do List Dashboard after login (CRUD tasks: add, toggle, delete)
 
 ---
 
@@ -89,7 +90,12 @@ Login → On first login, redirected to /setup-2fa to scan QR.
 Password Reset → User requests reset → email sent with secure token link → new password set.
 
 Security → Sessions rotate on login, CSRF protection, brute-force attempts limited.
+
 ```
+## ✅ Dashboard (To-Do List)
+--will add in GIF
+
+
 💡 Why this project?
 This project demonstrates:
 
@@ -99,7 +105,7 @@ Implementing multi-factor authentication (in-demand skill).
 
 Designing real-world flows (password reset, brute force protection).
 
-I built it to showcase my ability to design and implement secure authentication systems using Java and Spring Boot.
+I built it to showcase my ability to design and implement secure authentication systems using Java and Spring Boot. This makes it a strong example of applying security best practices in a user-facing application.
 
 📜 License
 MIT License – free to use & adapt.
