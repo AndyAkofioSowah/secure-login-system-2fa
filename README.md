@@ -23,15 +23,21 @@ A production-style **secure authentication system** built with **Java Spring Boo
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
-### Login Page  
+### Registration Page
+![Registration Page](docs/screenshots/register.png)
+
+### Login Page
 ![Login Page](docs/screenshots/login.png)
 
-### 2FA Setup (QR Code)  
-![2FA Setup](docs/screenshots/setup-2fa.png)
+### 2FA Setup
+![2FA QR Setup](docs/screenshots/setup-2fa.png)
 
-### Password Reset Email  
+### Dashboard
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Password Reset
 ![Password Reset](docs/screenshots/reset-password.png)
 
 ---
