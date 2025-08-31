@@ -95,6 +95,31 @@ Security → Sessions rotate on login, CSRF protection, brute-force attempts lim
 ## ✅ Dashboard (To-Do List)
 --will add in GIF
 
+🔒 Security Design
+
+Passwords → hashed with BCrypt
+
+2FA → Time-based One Time Passwords (RFC 6238)
+
+Brute force defense → IP lockout after failed attempts
+
+Session security → new session ID issued on login
+
+Email verification → expiring reset tokens for password recovery
+
+CSRF protection → enabled by Spring Security
+
+
+🚀 Future Improvements
+
+Dockerize the app for easier setup
+
+Redis-based login attempt tracking
+
+SMS / Email-based 2FA as alternatives
+
+User profile management & roles
+
 
 💡 Why this project?
 This project demonstrates:
