@@ -2,6 +2,9 @@
 
 A production-style **secure authentication system** built with **Java Spring Boot**, **Spring Security**, and **MySQL**, featuring **Two-Factor Authentication (2FA)** and a full **password reset flow**.
 
+
+[![Watch the demo](https://img.youtube.com/vi/k7Ji9vuFQLY/0.jpg)](https://youtu.be/k7Ji9vuFQLY)
+
 ## 🚀 Features
 
 -  User registration & login with **BCrypt password hashing**  
