@@ -37,8 +37,21 @@ A production-style **secure authentication system** built with **Java Spring Boo
 ### Dashboard
 ![Dashboard](docs/screenshots/dashboard.png)
 
-### Password Reset
-![Password Reset](docs/screenshots/reset-password.png)
+
+### 🔑 Password Reset Flow
+
+1. **Request a password reset**
+   ![Request Password Reset](docs/screenshots/Request_PasswordReset(1).png)
+
+2. **Confirmation that the reset email was sent**
+   ![Password Reset Sent](docs/screenshots/PasswordResetSent(2).png)
+
+3. **Check your email for the reset link**
+   ![Password Reset Email](docs/screenshots/PasswordResetEmail(3).png)
+
+4. **Enter and confirm your new password**
+   ![Reset Password Page](docs/screenshots/ResetPasswordPage(4).png)
+
 
 ---
 
