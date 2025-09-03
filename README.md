@@ -135,7 +135,7 @@ Email verification → expiring reset tokens for password recovery
 CSRF protection → enabled by Spring Security
 
 
-🚀 Future Improvements
+## 🚀 Future Improvements
 
 Dockerize the app for easier setup
 
@@ -146,7 +146,7 @@ SMS / Email-based 2FA as alternatives
 User profile management & roles
 
 
-💡 Why this project?
+## 💡 Why this project?
 This project demonstrates:
 
 Applying security best practices in web applications.
@@ -157,5 +157,5 @@ Designing real-world flows (password reset, brute force protection).
 
 I built it to showcase my ability to design and implement secure authentication systems using Java and Spring Boot. This makes it a strong example of applying security best practices in a user-facing application.
 
-📜 License
+## 📜 License
 MIT License – free to use & adapt.
