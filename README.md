@@ -46,6 +46,18 @@ A production-style **secure authentication system** built with **Java Spring Boo
 
 ---
 
+## Lessons Learned
+
+During the development of this project, I gained experience in several important areas:
+
+- **CSRF Protection**: Encountered CSRF token errors when submitting forms (e.g., during 2FA setup). Fixed this by properly integrating Spring Security’s CSRF handling into forms with hidden tokens.  
+- **Password Encoding**: Learned the importance of only encoding passwords once at creation/reset, avoiding double-encoding which caused login failures.  
+- **2FA QR Flow**: Ensured the 2FA setup flow worked smoothly by generating a TOTP secret, rendering it as a QR code, and verifying it against codes from an authenticator app.  
+- **Error Handling & User Experience**: Improved usability by adding clear error messages (e.g., wrong password, expired reset token) and friendly redirects, making the system easier to test and demo.  
+
+These challenges helped reinforce best practices in **web security, user authentication flows, and Spring Boot integration**.
+
+
 ## 📸 Screenshots
 
 ### Registration Page
