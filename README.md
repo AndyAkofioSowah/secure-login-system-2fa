@@ -159,3 +159,5 @@ I built it to showcase my ability to design and implement secure authentication 
 
 ## 📜 License
 MIT License – free to use & adapt.
+
+## Built by Andy Akofio-Sowah
