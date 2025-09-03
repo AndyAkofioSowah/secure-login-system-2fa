@@ -118,10 +118,9 @@ Password Reset → User requests reset → email sent with secure token link →
 Security → Sessions rotate on login, CSRF protection, brute-force attempts limited.
 
 ```
-## ✅ Dashboard (To-Do List)
---will add in GIF
 
-🔒 Security Design
+
+## 🔒 Security Design
 
 Passwords → hashed with BCrypt
 
