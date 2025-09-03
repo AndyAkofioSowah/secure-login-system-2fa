@@ -2,6 +2,29 @@
 
 A production-style **secure authentication system** built with **Java Spring Boot**, **Spring Security**, and **MySQL**, featuring **Two-Factor Authentication (2FA)** and a full **password reset flow**.
 
+
+# Secure Login System with 2FA 🔐
+
+![Java](https://img.shields.io/badge/Java-19-blue)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-3.5-brightgreen)
+![Security](https://img.shields.io/badge/Security-2FA%20Enabled-orange)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
+
+---
+
+## 📑 Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Video Walkthrough](#video-walkthrough)
+- [Screenshots](#screenshots)
+- [Tech Stack](#tech-stack)
+- [Setup Instructions](#setup-instructions)
+- [How It Works](#how-it-works)
+- [Security Design](#security-design)
+- [Future Improvements](#future-improvements)
+- [License](#license)
+
+ 
 # Secure Login System with 2FA (Spring Boot)
 
 🎥 **Project Walkthrough Video Below (please click on it):** 
